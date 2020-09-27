@@ -1,0 +1,3 @@
+chaseisabelle_phprom_metrics:
+    path: /metrics
+    controller: ChaseIsabelle\PHPromBundle\Controller\MetricsController::metrics

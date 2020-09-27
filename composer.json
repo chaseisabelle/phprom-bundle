@@ -1,0 +1,29 @@
+{
+  "name": "chaseisabelle/phprom-bundle",
+  "description": "symfony 4/5 phprom client bundle",
+  "type": "symfony-bundle",
+  "authors": [
+    {
+      "name": "chase"
+    }
+  ],
+  "require": {
+    "php": ">=7",
+    "symfony/http-kernel": "^4.0 || ^5.0",
+    "symfony/config": "^4.0 || ^5.0",
+    "symfony/cache": "^4.0 || ^5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "ChaseIsabelle\\PHPromBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\ChaseIsabelle\\PHPromBundle\\": "tests/"
+    }
+  }
+}
