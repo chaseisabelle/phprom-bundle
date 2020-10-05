@@ -1,13 +1,6 @@
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/src/.preload.php
-/var/
-/vendor/
-###< symfony/framework-bundle ###
-
 .idea
+composer.lock
+/vendor/
+
+.php_cs.cache
+coverage
