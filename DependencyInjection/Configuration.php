@@ -25,8 +25,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('address')
-                    ->isRequired()
                     ->cannotBeEmpty()
+                    ->defaultValue('127.0.0.1:3333')
                 ->end()
                 ->scalarNode('namespace')
                     ->isRequired()

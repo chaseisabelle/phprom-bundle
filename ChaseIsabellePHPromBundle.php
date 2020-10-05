@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ChaseIsabelle\PHPromBundle;
 
-use ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler\IgnoredRoutesPass;
+use ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler\CompilerPass;
 use ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler\RegisterMetricsGeneratorPass;
 use ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler\ResolveAdapterDefinitionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,9 +17,7 @@ class ChaseIsabellePHPromBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ResolveAdapterDefinitionPass());
-        $container->addCompilerPass(new IgnoredRoutesPass());
-        $container->addCompilerPass(new RegisterMetricsGeneratorPass());
+        $container->addCompilerPass(new CompilerPass());
     }
 
     public function getContainerExtension()

@@ -3,38 +3,23 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 <parameters>
-    <parameter key="phprom_bundle.collector_registry.class">Prometheus\CollectorRegistry</parameter>
+    <parameter key="phprom.client.class">PHProm\PHProm</parameter>
 </parameters>
 <services>
-    <service id="phprom_bundle.adapter" class="Prometheus\Storage\Adapter" abstract="true" public="false" autowire="false" autoconfigure="false" />
-
-    <service id="phprom_bundle.collector_registry" class="%phprom_bundle.collector_registry.class%" public="false" autowire="false" autoconfigure="false">
-        <argument type="service" id="phprom_bundle.adapter" />
+    <service id="phprom.client" class="%phprom.client.class%" public="true" autowire="false" autoconfigure="false">
     </service>
-
-    <service id="ChaseIsabelle\PHPromBundle\EventListener\RequestCounterListener" class="ChaseIsabelle\PHPromBundle\EventListener\RequestCounterListener" public="true" autowire="false" autoconfigure="false">
-        <tag name="kernel.event_listener" event="kernel.request"/>
-        <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequestPre" priority="1024"/>
-        <tag name="kernel.event_listener" event="kernel.terminate"/>
-        <argument type="service" id="ChaseIsabelle\PHPromBundle\Metrics\MetricsGeneratorRegistry"/>
+    <service id="chase_isabelle_phprom.event_listener.request_listener" class="ChaseIsabelle\PHPromBundle\EventListener\RequestListener" public="true" autowire="false" autoconfigure="false">
+        <tag name="kernel.event_listener" event="kernel.request" method="onRequest" />
+        <tag name="kernel.event_listener" event="kernel.response" method="onResponse" />
+        <argument type="service" id="phprom.client" />
+        <argument type="string" id="phprom.namespace" />
+        <argument type="collection" id="phprom.routes" />
         <call method="setLogger">
-            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="service" id="logger" on-invalid="ignore" />
         </call>
     </service>
-
-    <service id="ChaseIsabelle\PHPromBundle\Metrics\Renderer" class="ChaseIsabelle\PHPromBundle\Metrics\Renderer" public="true" autowire="false" autoconfigure="false">
-        <argument type="service" id="phprom_bundle.collector_registry" />
-    </service>
-
-    <service id="ChaseIsabelle\v\Metrics\AppMetrics" class="ChaseIsabelle\PHPromBundle\Metrics\AppMetrics" public="true" autowire="false" autoconfigure="false">
-        <tag name="phprom_bundle.metrics_generator"/>
-    </service>
-
-    <service id="ChaseIsabelle\PHPromBundle\Metrics\MetricsGeneratorRegistry" class="ChaseIsabelle\PHPromBundle\Metrics\MetricsGeneratorRegistry" public="true" autowire="false" autoconfigure="false">
-    </service>
-
-    <service id="ChaseIsabelle\PHPromBundle\Controller\MetricsController" class="ChaseIsabelle\PHPromBundle\Controller\MetricsController" public="true" autowire="false" autoconfigure="false">
-        <argument type="service" id="ChaseIsabelle\PHPromBundle\Metrics\Renderer"/>
+    <service id="chase_isabelle_phprom.controller.metrics_controller" class="ChaseIsabelle\PHPromBundle\Controller\MetricsController" public="true" autowire="false" autoconfigure="false">
+        <argument type="service" id="phprom.client" />
     </service>
 </services>
 </container>

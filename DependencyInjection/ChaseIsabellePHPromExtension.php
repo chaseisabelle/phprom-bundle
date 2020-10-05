@@ -19,21 +19,18 @@ class ChaseIsabellePHPromExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configurations, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $configuration  = new Configuration();
+        $configurations = $this->processConfiguration($configuration, $configurations);
 
-        $container->setParameter('phprom_bundle.address', $config['address']);
-        $container->setParameter('phprom_bundle.namespace', $config['namespace']);
-//        $container->setParameter('phprom_bundle.type', $config['type']);
-//        if ('redis' === $config['type']) {
-//            $container->setParameter('phprom_bundle.redis', $config['redis']);
-//        }
-        $container->setParameter('phprom_bundle.routes', $config['routes']);
-        dd($config, $container);
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $container->setParameter('phprom.address', $configurations['address']);
+        $container->setParameter('phprom.namespace', $configurations['namespace']);
+        $container->setParameter('phprom.routes', $configurations['routes']);
 
+        (new Loader\XmlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config')
+        ))->load('services.xml');
     }
 }
