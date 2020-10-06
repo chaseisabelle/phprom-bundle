@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler;
 
 use ChaseIsabelle\PHPromBundle\EventListener\RequestListener;
+use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,6 +16,12 @@ class CompilerPass implements CompilerPassInterface
     {
         if ($container->hasDefinition('phprom.client')) {
             $container->getDefinition('phprom.client')->setArguments([
+                $container->getParameter('phprom.address')
+            ]);
+        }
+
+        if ($container->hasDefinition('chase_isabelle_phprom.service.phprom_service')) {
+            $container->getDefinition('chase_isabelle_phprom.service.phprom_service')->setArguments([
                 $container->getParameter('phprom.address')
             ]);
         }

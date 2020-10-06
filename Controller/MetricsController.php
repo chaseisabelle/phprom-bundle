@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ChaseIsabelle\PHPromBundle\Controller;
 
+use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
 use PHProm\PHProm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,14 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
 class MetricsController extends AbstractController
 {
     /**
-     * @var PHProm
+     * @var PHPromService
      */
     protected $phprom;
 
     /**
-     * @param PHProm $phprom
+     * @param PHPromService $phprom
      */
-    public function __construct(PHProm $phprom)
+    public function __construct(PHPromService $phprom)
     {
         $this->phprom = $phprom;
     }
@@ -33,7 +34,7 @@ class MetricsController extends AbstractController
      */
     public function metrics()
     {
-        return new Response($this->phprom->get(), 200, [
+        return new Response($this->phprom->instance()->get(), 200, [
             'Content-Type' => 'text/plain; version=0.0.4'
         ]);
     }

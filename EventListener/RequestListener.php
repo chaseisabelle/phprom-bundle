@@ -38,16 +38,16 @@ class RequestListener implements LoggerAwareInterface
     private $namespace;
 
     /**
-     * @param PHProm $phprom
-     * @param string $namespace
-     * @param array  $routes
+     * @param PHPromService $phprom
+     * @param string        $namespace
+     * @param array         $routes
      */
-    public function __construct(PHProm $phprom, string $namespace, array $routes = [])
+    public function __construct(PHPromService $phprom, string $namespace, array $routes = [])
     {
         $this->namespace = $namespace;
         $this->routes    = $routes;
 
-        $histogram = (new Histogram($phprom))
+        $histogram = (new Histogram($phprom->instance()))
             ->setNamespace($this->namespace)
             ->setName('request_latency_seconds')
             ->setDescription('incoming http request latencies')

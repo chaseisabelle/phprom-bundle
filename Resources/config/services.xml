@@ -2,16 +2,14 @@
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<parameters>
-    <parameter key="phprom.client.class">PHProm\PHProm</parameter>
-</parameters>
 <services>
-    <service id="phprom.client" class="%phprom.client.class%" public="true" autowire="false" autoconfigure="false">
+    <service id="chase_isabelle_phprom.service.phprom_service" class="ChaseIsabelle\PHPromBundle\Service\PHPromService" public="true" autowire="false" autoconfigure="false">
+        <argument type="string" id="phprom.address"/>
     </service>
     <service id="chase_isabelle_phprom.event_listener.request_listener" class="ChaseIsabelle\PHPromBundle\EventListener\RequestListener" public="true" autowire="false" autoconfigure="false">
         <tag name="kernel.event_listener" event="kernel.request" method="onRequest" />
         <tag name="kernel.event_listener" event="kernel.response" method="onResponse" />
-        <argument type="service" id="phprom.client" />
+        <argument type="service" id="chase_isabelle_phprom.service.phprom_service" />
         <argument type="string" id="phprom.namespace" />
         <argument type="collection" id="phprom.routes" />
         <call method="setLogger">
@@ -19,7 +17,7 @@
         </call>
     </service>
     <service id="chase_isabelle_phprom.controller.metrics_controller" class="ChaseIsabelle\PHPromBundle\Controller\MetricsController" public="true" autowire="false" autoconfigure="false">
-        <argument type="service" id="phprom.client" />
+        <argument type="service" id="chase_isabelle_phprom.service.phprom_service" />
     </service>
 </services>
 </container>
