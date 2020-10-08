@@ -11,8 +11,7 @@ use PHProm\Timer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 /**
  * Class RequestCounterListener.
@@ -58,23 +57,9 @@ class RequestListener implements LoggerAwareInterface
     }
 
     /**
-     * @param RequestEvent $event
-     * @throws Exception
+     * @param TerminateEvent $event
      */
-    public function onRequest(RequestEvent $event): void
-    {
-        if (!$this->should($event)) {
-            return;
-        }
-
-
-    }
-
-    /**
-     * @param ResponseEvent $event
-     * @throws Exception
-     */
-    public function onResponse(ResponseEvent $event): void
+    public function onTerminate(TerminateEvent $event): void
     {
         if (!$this->should($event)) {
             return;
@@ -89,7 +74,7 @@ class RequestListener implements LoggerAwareInterface
             $this->timer->stop()->record($labels);
         } catch (Exception $exception) {
             if ($this->logger) {
-                $this->logger->warning('failed to record metric: ' . $exception->getMessage(), $labels);
+                $this->logger->warning('phprom failure: ' . $exception->getMessage(), $labels);
             }
         }
     }
@@ -113,18 +98,18 @@ class RequestListener implements LoggerAwareInterface
             return false;
         }
 
+        if (!$this->routes) {
+            return true;
+        }
+
         $route = $this->route($event);
 
         if (!$route) {
             return false;
         }
 
-        if (!$this->routes) {
-            return true;
-        }
-
         foreach ($this->routes as $matcher) {
-            if ($route !== $matcher && !@preg_match($matcher, $route)) {
+            if ($route === $matcher || @preg_match($matcher, $route)) {
                 return true;
             }
         }

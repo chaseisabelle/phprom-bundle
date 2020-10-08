@@ -11,8 +11,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @package ChaseIsabelle\PHPromBundle
+ */
 class ChaseIsabellePHPromBundle extends Bundle
 {
+    /**
+     * adds the custom compiler pass to the container
+     *
+     * @param ContainerBuilder $container
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -20,6 +28,12 @@ class ChaseIsabellePHPromBundle extends Bundle
         $container->addCompilerPass(new CompilerPass());
     }
 
+    /**
+     * override the extension for custom config file and malformed name due
+     * to camelcase converter
+     *
+     * @return false|ExtensionInterface|__anonymous@1024|null
+     */
     public function getContainerExtension()
     {
         $extension = parent::getContainerExtension();
@@ -27,7 +41,8 @@ class ChaseIsabellePHPromBundle extends Bundle
         return new class ($extension) implements ExtensionInterface {
             private $extension;
 
-            public function __construct($extension) {
+            public function __construct($extension)
+            {
                 $this->extension = $extension;
             }
 

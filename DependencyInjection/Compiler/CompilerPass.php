@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler;
 
-use ChaseIsabelle\PHPromBundle\Controller\MetricsController;
 use ChaseIsabelle\PHPromBundle\EventListener\RequestListener;
 use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @package ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler

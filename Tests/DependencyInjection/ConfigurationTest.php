@@ -1,93 +1,85 @@
 <?php
 
-namespace Artprima\PrometheusMetricsBundle\Tests\DependencyInjection;
+namespace Tests\ChaseIsabelle\PHPromBundle\DependencyInjection;
 
-use Artprima\PrometheusMetricsBundle\DependencyInjection\Configuration;
-use PHPUnit\Framework\TestCase;
+use ChaseIsabelle\PHPromBundle\DependencyInjection\Configuration;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Tests\ChaseIsabelle\PHPromBundle\PHPromTestCase;
 
-class ConfigurationTest extends TestCase
+/**
+ * @package Tests\ChaseIsabelle\PHPromBundle\DependencyInjection
+ */
+class ConfigurationTest extends PHPromTestCase
 {
-    public function configDataProvider(): array {
-        return [
-            [
-                'in_memory',
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'in_memory',
-                ],
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'in_memory',
-                    'ignored_routes' => ['prometheus_bundle_prometheus'],
-                ],
-            ],
-            [
-                'redis (no password)',
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'redis',
-                    'redis' => [
-                        'host' => '127.0.0.1',
-                        'port' => 6379,
-                        'timeout' => 0.1,
-                        'read_timeout' => 10,
-                        'persistent_connections' => false,
-                        'password' => null,
-                    ],
-                ],
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'redis',
-                    'ignored_routes' => ['prometheus_bundle_prometheus'],
-                    'redis' => [
-                        'host' => '127.0.0.1',
-                        'port' => 6379,
-                        'timeout' => 0.1,
-                        'read_timeout' => 10,
-                        'persistent_connections' => false,
-                        'password' => null,
-                    ],
-                ],
-            ],
-            [
-                'redis unix-socket (no password)',
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'redis',
-                    'redis' => [
-                        'host' => '/var/run/redis/redis.sock',
-                        'timeout' => 0.1,
-                        'read_timeout' => 10,
-                        'persistent_connections' => false,
-                        'password' => null,
-                    ],
-                ],
-                [
-                    'namespace' => 'myapp',
-                    'type' => 'redis',
-                    'ignored_routes' => ['prometheus_bundle_prometheus'],
-                    'redis' => [
-                        'host' => '/var/run/redis/redis.sock',
-                        'port' => 6379,
-                        'timeout' => 0.1,
-                        'read_timeout' => '10',
-                        'persistent_connections' => false,
-                        'password' => null,
-                    ],
-                ],
-            ],
+    /**
+     * user has provided all configs
+     */
+    public function testGetConfigTreeBuilder_allProvided()
+    {
+        $address        = '1.2.3.4:1234';
+        $namespace      = 'test';
+        $routes         = ['poo', 'pee'];
+        $configurations = [
+            'address'   => $address,
+            'namespace' => $namespace,
+            'routes'    => $routes
         ];
+
+        $configuration = new Configuration();
+        $expect        = array_merge($configurations, []);
+        $builder       = $configuration->getConfigTreeBuilder();
+        $tree          = $builder->buildTree();
+        $result        = $tree->finalize($configurations);
+
+        $this->assertEquals($expect, $result);
     }
 
     /**
-     * @dataProvider configDataProvider
-     * @ doesNotPerformAssertions
+     * user has not provided defaults
      */
-    public function testGetConfigTreeBuilder(string $description, array $config, array $expected) {
-        $cfg = new Configuration();
-        $treeBuilder = $cfg->getConfigTreeBuilder();
-        $tree = $treeBuilder->buildTree();
-        $result = $tree->finalize($config);
-        $this->assertEquals($expected, $result, $description);
+    public function testGetConfigTreeBuilder_defaults()
+    {
+        $address        = '127.0.0.1:3333';
+        $namespace      = 'test';
+        $routes         = [];
+        $configurations = [
+            'namespace' => $namespace
+        ];
+        $defaults       = [
+            'address' => $address,
+            'routes'  => $routes
+        ];
+
+        $configuration = new Configuration();
+        $expect        = array_merge($configurations, $defaults);
+        $builder       = $configuration->getConfigTreeBuilder();
+        $tree          = $builder->buildTree();
+        $result        = $tree->finalize($configurations);
+
+        $this->assertEquals($expect, $result);
+    }
+
+    /**
+     * user has not provided required
+     */
+    public function testGetConfigTreeBuilder_noRequired()
+    {
+        $address        = '127.0.0.1:3333';
+        $routes         = [];
+        $configurations = [];
+        $defaults       = [
+            'address' => $address,
+            'routes'  => $routes
+        ];
+
+        $this->expectException(InvalidConfigurationException::class);
+
+        $configuration = new Configuration();
+        $expect        = array_merge($configurations, $defaults);
+        $builder       = $configuration->getConfigTreeBuilder();
+        $tree          = $builder->buildTree();
+        $result        = $tree->finalize($configurations);
+
+        $this->assertEquals($expect, $result);
     }
 }

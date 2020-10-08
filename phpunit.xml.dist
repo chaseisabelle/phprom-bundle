@@ -7,16 +7,14 @@
          bootstrap="vendor/autoload.php"
 >
     <php>
-        <ini name="error_reporting" value="-1" />
-        <server name="KERNEL_CLASS" value="AppKernel" />
+        <ini name="error_reporting" value="-1"/>
+        <server name="KERNEL_CLASS" value="AppKernel"/>
     </php>
-
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="tests">
             <directory>Tests</directory>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory>.</directory>
