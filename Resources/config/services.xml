@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-    <service id="chase_isabelle_phprom.service.phprom_service" class="ChaseIsabelle\PHPromBundle\Service\PHPromService" public="true" autowire="false" autoconfigure="false">
-        <argument type="string" id="phprom.address"/>
-    </service>
-    <service id="chase_isabelle_phprom.event_listener.request_listener" class="ChaseIsabelle\PHPromBundle\EventListener\RequestListener" public="true" autowire="false" autoconfigure="false">
-        <tag name="kernel.event_listener" event="kernel.request" method="onRequest" />
-        <tag name="kernel.event_listener" event="kernel.response" method="onResponse" />
-        <argument type="service" id="chase_isabelle_phprom.service.phprom_service" />
-        <argument type="string" id="phprom.namespace" />
-        <argument type="collection" id="phprom.routes" />
-        <call method="setLogger">
-            <argument type="service" id="logger" on-invalid="ignore" />
-        </call>
-    </service>
-    <service id="chase_isabelle_phprom.controller.metrics_controller" class="ChaseIsabelle\PHPromBundle\Controller\MetricsController" public="true" autowire="false" autoconfigure="false">
-        <argument type="service" id="chase_isabelle_phprom.service.phprom_service" />
-    </service>
-</services>
+    <services>
+        <service id="ChaseIsabelle\PHPromBundle\Service\PHPromService" public="true">
+            <argument type="string" id="phprom.address"/>
+        </service>
+        <service id="ChaseIsabelle\PHPromBundle\Controller\MetricsController" public="true">
+            <argument type="service" id="ChaseIsabelle\PHPromBundle\Service\PHPromService"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="ChaseIsabelle\PHPromBundle\EventListener\RequestListener" public="true">
+            <argument type="service" id="ChaseIsabelle\PHPromBundle\Service\PHPromService"/>
+            <argument type="string" id="phprom.namespace"/>
+            <argument type="collection" id="phprom.routes"/>
+            <tag name="kernel.event_listener" event="kernel.request" method="onRequest"/>
+            <tag name="kernel.event_listener" event="kernel.response" method="onResponse"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" on-invalid="ignore"/>
+            </call>
+        </service>
+    </services>
 </container>

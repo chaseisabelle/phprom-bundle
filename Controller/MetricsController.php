@@ -6,14 +6,13 @@ namespace ChaseIsabelle\PHPromBundle\Controller;
 
 use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
-use PHProm\PHProm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class MetricsController.
  */
-class MetricsController extends AbstractController
+class MetricsController
 {
     /**
      * @var PHPromService

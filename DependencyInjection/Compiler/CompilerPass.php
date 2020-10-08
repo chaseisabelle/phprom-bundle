@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler;
 
+use ChaseIsabelle\PHPromBundle\Controller\MetricsController;
 use ChaseIsabelle\PHPromBundle\EventListener\RequestListener;
 use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
+/**
+ * @package ChaseIsabelle\PHPromBundle\DependencyInjection\Compiler
+ */
 class CompilerPass implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     * @throws Exception
+     */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasDefinition('phprom.client')) {
-            $container->getDefinition('phprom.client')->setArguments([
-                $container->getParameter('phprom.address')
-            ]);
-        }
-
-        if ($container->hasDefinition('chase_isabelle_phprom.service.phprom_service')) {
-            $container->getDefinition('chase_isabelle_phprom.service.phprom_service')->setArguments([
+        if ($container->hasDefinition(PHPromService::class)) {
+            $container->getDefinition(PHPromService::class)->setArguments([
                 $container->getParameter('phprom.address')
             ]);
         }
@@ -30,7 +33,7 @@ class CompilerPass implements CompilerPassInterface
             $definition = $container->getDefinition(RequestListener::class);
 
             $definition->setArgument(
-                'phprom.namespace',
+                '$namespace',
                 $container->getParameter('phprom.namespace')
             );
 
@@ -42,7 +45,7 @@ class CompilerPass implements CompilerPassInterface
                 }
             });
 
-            $definition->setArgument('phprom.routes', $routes);
+            $definition->setArgument('$routes', $routes);
         }
     }
 }

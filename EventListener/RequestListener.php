@@ -7,7 +7,6 @@ namespace ChaseIsabelle\PHPromBundle\EventListener;
 use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
 use PHProm\Histogram;
-use PHProm\PHProm;
 use PHProm\Timer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -41,6 +40,7 @@ class RequestListener implements LoggerAwareInterface
      * @param PHPromService $phprom
      * @param string        $namespace
      * @param array         $routes
+     * @throws Exception
      */
     public function __construct(PHPromService $phprom, string $namespace, array $routes = [])
     {
