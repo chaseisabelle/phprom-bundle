@@ -8,6 +8,9 @@ a symfony client for [phprom](https://github.com/chaseisabelle/phprom), a promet
     - `pecl install grpc`
     - or use the [docker image](https://hub.docker.com/r/grpc/php)
 
+#### related
+this is essentially a symfony bundle wrapper for the [phprom client](https://github.com/chaseisabelle/phprom-client)
+
 ---
 ## install
 
