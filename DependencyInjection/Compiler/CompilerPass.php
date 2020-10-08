@@ -23,7 +23,8 @@ class CompilerPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(PHPromService::class)) {
             $container->getDefinition(PHPromService::class)->setArguments([
-                $container->getParameter('phprom.address')
+                $container->getParameter('phprom.address'),
+                $container->getParameter('phprom.namespace')
             ]);
         }
 
