@@ -192,4 +192,74 @@ class RequestListenerTest extends PHPromTestCase
 
         $listener->onTerminate($event);
     }
+
+    /**
+     * do a full-pass test
+     */
+    public function testRegexRoute_success()
+    {
+        $namespace = 'ultimate_warrior';
+        $route     = 'andre_the_giant';
+        $routes    = ['/^[aA][^t]+t/'];
+        $status    = 200;
+        $labels    = ['route' => $route, 'status' => $status];
+        $name      = 'request_latency_seconds';
+        $phprom    = $this->createMock(PHProm::class);
+        $service   = $this->createMock(PHPromService::class);
+        $event     = $this->createMock(TerminateEvent::class);
+        $request   = $this->createMock(Request::class);
+        $attributes = $this->createMock(ParameterBag::class);
+        $resposne = $this->createMock(Response::class);
+
+        $phprom->expects($this->once())
+            ->method('registerHistogram')
+            ->with(
+                $namespace,
+                $name,
+                $this->isType('string'),
+                array_keys($labels),
+                []
+            )
+            ->willReturn(true);
+
+        $phprom->expects($this->once())
+            ->method('recordHistogram')
+            ->with(
+                $namespace,
+                $name,
+                $this->isType('float'),
+                $labels
+            );
+
+        $service->expects($this->once())
+            ->method('instance')
+            ->willReturn($phprom);
+
+        $event->expects($this->once())
+            ->method('isMasterRequest')
+            ->willReturn(true);
+
+        $event->expects($this->any())
+            ->method('getRequest')
+            ->willReturn($request);
+
+        $attributes->expects($this->any())
+            ->method('get')
+            ->with('_route')
+            ->willReturn($route);
+
+        $request->attributes = $attributes;
+
+        $event->expects($this->once())
+            ->method('getResponse')
+            ->willReturn($resposne);
+
+        $resposne->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn($status);
+
+        $listener = new RequestListener($service, $namespace, $routes);
+
+        $listener->onTerminate($event);
+    }
 }
