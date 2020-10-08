@@ -17,9 +17,10 @@ class PHPromServiceTest extends PHPromTestCase
      */
     public function testInstance_success()
     {
-        $address = '127.0.0.1:3333';
-        $phprom  = new PHProm($address);
-        $service = new PHPromService($address);
+        $address   = '127.0.0.1:3333';
+        $namespace = 'big_giant_hamburger_feet';
+        $phprom    = new PHProm($address);
+        $service   = new PHPromService($address, $namespace);
 
         $this->assertEquals($phprom, $service->instance());
     }
@@ -29,9 +30,10 @@ class PHPromServiceTest extends PHPromTestCase
      */
     public function testInstance_notEqual()
     {
-        $address = '127.0.0.1:3334';
-        $phprom  = new PHProm('127.0.0.1:3333');
-        $service = new PHPromService($address);
+        $address   = '127.0.0.1:3334';
+        $namespace = 'am_i_a_turtle_or_a_clown';
+        $phprom    = new PHProm('127.0.0.1:3333');
+        $service   = new PHPromService($address, $namespace);
 
         $this->assertNotEquals($phprom, $service->instance());
     }
@@ -44,9 +46,10 @@ class PHPromServiceTest extends PHPromTestCase
     public function testInstance_failure()
     {
         $address = '127.0.0.1:3333';
+        $namespace = 'fat_tony';
 
-        $service = new class ($address) extends PHPromService {
-            public function __construct(string $address)
+        $service = new class ($address, $namespace) extends PHPromService {
+            public function __construct(string $address, string $namespace)
             {
                 // do not set
             }

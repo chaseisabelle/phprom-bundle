@@ -43,9 +43,14 @@ class CompilerPassTest extends PHPromTestCase
             ->with('phprom.address')
             ->willReturn($address);
 
+        $container->expects($this->at($index++))
+            ->method('getParameter')
+            ->with('phprom.namespace')
+            ->willReturn($namespace);
+
         $service->expects($this->once())
             ->method('setArguments')
-            ->with([$address]);
+            ->with([$address, $namespace]);
 
         $container->expects($this->at($index++))
             ->method('hasDefinition')
@@ -106,9 +111,14 @@ class CompilerPassTest extends PHPromTestCase
             ->with('phprom.address')
             ->willReturn($address);
 
+        $container->expects($this->at($index++))
+            ->method('getParameter')
+            ->with('phprom.namespace')
+            ->willReturn($namespace);
+
         $service->expects($this->once())
             ->method('setArguments')
-            ->with([$address]);
+            ->with([$address, $namespace]);
 
         $container->expects($this->at($index++))
             ->method('hasDefinition')
