@@ -2,6 +2,11 @@
 a symfony client for [phprom](https://github.com/chaseisabelle/phprom), a prometheus metrics datastore for php apps
 
 ---
+## example
+
+see a fully functional example [here](https://github.com/chaseisabelle/phprom-example)
+
+---
 ## prerequisites
 - [phprom](https://github.com/chaseisabelle/phprom) server
 - [grpc extension](https://grpc.io/docs/languages/php/quickstart/)
