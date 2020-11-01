@@ -24,22 +24,17 @@ class CompilerPass implements CompilerPassInterface
         if ($container->hasDefinition(PHPromService::class)) {
             $container->getDefinition(PHPromService::class)->setArguments([
                 $container->getParameter('phprom.address'),
-                $container->getParameter('phprom.namespace')
+                $container->getParameter('phprom.namespace'),
+                $container->getParameter('phprom.api')
             ]);
         }
 
         if ($container->hasDefinition(RequestListener::class)) {
             $definition = $container->getDefinition(RequestListener::class);
-
-            $definition->setArgument(
-                '$namespace',
-                $container->getParameter('phprom.namespace')
-            );
-
-            $routes = $container->getParameter('phprom.routes');
+            $routes     = $container->getParameter('phprom.routes');
 
             array_walk($routes, function ($route) {
-                if (!trim($route)) {
+                if (trim($route) === '') {
                     throw new Exception('route cannot be empty');
                 }
             });

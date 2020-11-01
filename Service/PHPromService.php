@@ -30,13 +30,15 @@ class PHPromService
     protected $namespace;
 
     /**
-     * @param string $address
-     * @param string $namespace
+     * @param string $address the address phprom server is listening on
+     * @param string $namespace the php app's global namespace
+     * @param string $api the interface to user (grpc or rest)
+     * @throws Exception
      */
-    public function __construct(string $address, string $namespace)
+    public function __construct(string $address, string $namespace, string $api = PHProm::GRPC_API)
     {
         if (!array_key_exists($address, self::$instances)) {
-            self::$instances[$address] = new PHProm($address);
+            self::$instances[$address] = new PHProm($address, $api);
         }
 
         $this->address   = $address;
