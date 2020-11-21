@@ -49,6 +49,7 @@ composer require chaseisabelle/phprom-bundle
     ```yaml
     phprom:
       address: 127.0.0.1:3333 # optional, defaults to 127.0.0.1:3333
+      api: grpc # optional, defaults to grpc (use "rest" for rest api)
       namespace: my_cool_app # required, the prefix for all your metrics
       routes: # optional, if empty or omitted then all routes will be recorded
         - my_cool_route # route can be plain string - only routes matching these strings will be recorded
