@@ -35,7 +35,10 @@ class MetricsControllerTest extends PHPromTestCase
             ->method('instance')
             ->willReturn($phprom);
 
-        $this->assertEquals($response, $controller->metrics());
+        $actual = $controller->metrics();
+
+        $this->assertEquals($response->getStatusCode(), $actual->getStatusCode());
+        $this->assertEquals($response->getContent(), $actual->getContent());
     }
 
     /**

@@ -18,10 +18,12 @@ class ConfigurationTest extends PHPromTestCase
     {
         $address        = '1.2.3.4:1234';
         $namespace      = 'test';
+        $api            = 'rest';
         $routes         = ['poo', 'pee'];
         $configurations = [
             'address'   => $address,
             'namespace' => $namespace,
+            'api'       => $api,
             'routes'    => $routes
         ];
 
@@ -41,12 +43,14 @@ class ConfigurationTest extends PHPromTestCase
     {
         $address        = '127.0.0.1:3333';
         $namespace      = 'test';
+        $api            = 'grpc';
         $routes         = [];
         $configurations = [
             'namespace' => $namespace
         ];
         $defaults       = [
             'address' => $address,
+            'api'     => $api,
             'routes'  => $routes
         ];
 

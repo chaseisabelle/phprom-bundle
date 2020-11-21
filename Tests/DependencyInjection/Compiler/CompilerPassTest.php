@@ -23,6 +23,7 @@ class CompilerPassTest extends PHPromTestCase
         $index     = 0;
         $address   = 'poop';
         $namespace = 'plop';
+        $api = 'hamburger';
         $routes    = ['peepee'];
         $pass      = new CompilerPass();
         $container = $this->createMock(ContainerBuilder::class);
@@ -48,9 +49,14 @@ class CompilerPassTest extends PHPromTestCase
             ->with('phprom.namespace')
             ->willReturn($namespace);
 
+        $container->expects($this->at($index++))
+            ->method('getParameter')
+            ->with('phprom.api')
+            ->willReturn($api);
+
         $service->expects($this->once())
             ->method('setArguments')
-            ->with([$address, $namespace]);
+            ->with([$address, $namespace, $api]);
 
         $container->expects($this->at($index++))
             ->method('hasDefinition')
@@ -64,19 +70,10 @@ class CompilerPassTest extends PHPromTestCase
 
         $container->expects($this->at($index++))
             ->method('getParameter')
-            ->with('phprom.namespace')
-            ->willReturn($namespace);
-
-        $listener->expects($this->at(0))
-            ->method('setArgument')
-            ->with('$namespace', $namespace);
-
-        $container->expects($this->at($index++))
-            ->method('getParameter')
             ->with('phprom.routes')
             ->willReturn($routes);
 
-        $listener->expects($this->at(1))
+        $listener->expects($this->at(0))
             ->method('setArgument')
             ->with('$routes', $routes);
 
@@ -91,6 +88,7 @@ class CompilerPassTest extends PHPromTestCase
         $index     = 0;
         $address   = 'poop';
         $namespace = 'plop';
+        $api='caca';
         $routes    = [' '];
         $pass      = new CompilerPass();
         $container = $this->createMock(ContainerBuilder::class);
@@ -116,9 +114,14 @@ class CompilerPassTest extends PHPromTestCase
             ->with('phprom.namespace')
             ->willReturn($namespace);
 
+        $container->expects($this->at($index++))
+            ->method('getParameter')
+            ->with('phprom.api')
+            ->willReturn($api);
+
         $service->expects($this->once())
             ->method('setArguments')
-            ->with([$address, $namespace]);
+            ->with([$address, $namespace, $api]);
 
         $container->expects($this->at($index++))
             ->method('hasDefinition')
@@ -129,15 +132,6 @@ class CompilerPassTest extends PHPromTestCase
             ->method('getDefinition')
             ->with(RequestListener::class)
             ->willReturn($listener);
-
-        $container->expects($this->at($index++))
-            ->method('getParameter')
-            ->with('phprom.namespace')
-            ->willReturn($namespace);
-
-        $listener->expects($this->once())
-            ->method('setArgument')
-            ->with('$namespace', $namespace);
 
         $container->expects($this->at($index++))
             ->method('getParameter')

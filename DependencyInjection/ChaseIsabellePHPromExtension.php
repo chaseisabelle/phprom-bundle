@@ -26,6 +26,7 @@ class ChaseIsabellePHPromExtension extends Extension
 
         $container->setParameter('phprom.address', $configurations['address']);
         $container->setParameter('phprom.namespace', $configurations['namespace']);
+        $container->setParameter('phprom.api', $configurations['api']);
         $container->setParameter('phprom.routes', $configurations['routes']);
 
         (new Loader\XmlFileLoader(
