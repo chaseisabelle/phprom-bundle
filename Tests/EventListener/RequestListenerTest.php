@@ -9,6 +9,7 @@ use PHProm\PHProm;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Tests\ChaseIsabelle\PHPromBundle\PHPromTestCase;
 
@@ -29,7 +30,8 @@ class RequestListenerTest extends PHPromTestCase
         $name       = 'request_latency_seconds';
         $service    = $this->createMock(PHPromService::class);
         $histogram  = $this->createMock(Histogram::class);
-        $event      = $this->createMock(TerminateEvent::class);
+        $event1     = $this->createMock(RequestEvent::class);
+        $event2     = $this->createMock(TerminateEvent::class);
         $request    = $this->createMock(Request::class);
         $attributes = $this->createMock(ParameterBag::class);
         $response   = $this->createMock(Response::class);
@@ -57,11 +59,11 @@ class RequestListenerTest extends PHPromTestCase
             ->method('record')
             ->with($this->isType('float'), $labels);
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(true);
 
-        $event->expects($this->any())
+        $event2->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
 
@@ -72,7 +74,7 @@ class RequestListenerTest extends PHPromTestCase
 
         $request->attributes = $attributes;
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('getResponse')
             ->willReturn($response);
 
@@ -82,7 +84,8 @@ class RequestListenerTest extends PHPromTestCase
 
         $listener = new RequestListener($service, $routes);
 
-        $listener->onTerminate($event);
+        $listener->onRequest($event1);
+        $listener->onTerminate($event2);
     }
 
     /**
@@ -97,7 +100,8 @@ class RequestListenerTest extends PHPromTestCase
         $name       = 'request_latency_seconds';
         $service    = $this->createMock(PHPromService::class);
         $histogram  = $this->createMock(Histogram::class);
-        $event      = $this->createMock(TerminateEvent::class);
+        $event1     = $this->createMock(RequestEvent::class);
+        $event2     = $this->createMock(TerminateEvent::class);
         $request    = $this->createMock(Request::class);
         $attributes = $this->createMock(ParameterBag::class);
         $resposne   = $this->createMock(Response::class);
@@ -125,11 +129,11 @@ class RequestListenerTest extends PHPromTestCase
             ->method('record')
             ->with($this->isType('float'), $labels);
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(true);
 
-        $event->expects($this->any())
+        $event2->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
 
@@ -140,7 +144,7 @@ class RequestListenerTest extends PHPromTestCase
 
         $request->attributes = $attributes;
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('getResponse')
             ->willReturn($resposne);
 
@@ -150,7 +154,8 @@ class RequestListenerTest extends PHPromTestCase
 
         $listener = new RequestListener($service, $routes);
 
-        $listener->onTerminate($event);
+        $listener->onRequest($event1);
+        $listener->onTerminate($event2);
     }
 
     /**
@@ -164,7 +169,8 @@ class RequestListenerTest extends PHPromTestCase
         $routes    = [$route];
         $service   = $this->createMock(PHPromService::class);
         $histogram = $this->createMock(Histogram::class);
-        $event     = $this->createMock(TerminateEvent::class);
+        $event1    = $this->createMock(RequestEvent::class);
+        $event2    = $this->createMock(TerminateEvent::class);
 
         $service->expects($this->once())
             ->method('histogram')
@@ -188,19 +194,20 @@ class RequestListenerTest extends PHPromTestCase
         $histogram->expects($this->never())
             ->method('record');
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(false);
 
-        $event->expects($this->never())
+        $event2->expects($this->never())
             ->method('getRequest');
 
-        $event->expects($this->never())
+        $event2->expects($this->never())
             ->method('getResponse');
 
         $listener = new RequestListener($service, $routes);
 
-        $listener->onTerminate($event);
+        $listener->onRequest($event1);
+        $listener->onTerminate($event2);
     }
 
     /**
@@ -215,7 +222,8 @@ class RequestListenerTest extends PHPromTestCase
         $name       = 'request_latency_seconds';
         $service    = $this->createMock(PHPromService::class);
         $histogram  = $this->createMock(Histogram::class);
-        $event      = $this->createMock(TerminateEvent::class);
+        $event1     = $this->createMock(RequestEvent::class);
+        $event2     = $this->createMock(TerminateEvent::class);
         $request    = $this->createMock(Request::class);
         $attributes = $this->createMock(ParameterBag::class);
         $resposne   = $this->createMock(Response::class);
@@ -243,11 +251,11 @@ class RequestListenerTest extends PHPromTestCase
             ->method('record')
             ->with($this->isType('float'), $labels);
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(true);
 
-        $event->expects($this->any())
+        $event2->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
 
@@ -258,7 +266,7 @@ class RequestListenerTest extends PHPromTestCase
 
         $request->attributes = $attributes;
 
-        $event->expects($this->once())
+        $event2->expects($this->once())
             ->method('getResponse')
             ->willReturn($resposne);
 
@@ -268,6 +276,7 @@ class RequestListenerTest extends PHPromTestCase
 
         $listener = new RequestListener($service, $routes);
 
-        $listener->onTerminate($event);
+        $listener->onRequest($event1);
+        $listener->onTerminate($event2);
     }
 }
