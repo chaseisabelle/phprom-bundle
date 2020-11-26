@@ -13,6 +13,7 @@
             <argument type="service" id="ChaseIsabelle\PHPromBundle\Service\PHPromService"/>
             <argument type="string" id="phprom.namespace"/>
             <argument type="collection" id="phprom.routes"/>
+            <tag name="kernel.event_listener" event="kernel.request" method="onRequest"/>
             <tag name="kernel.event_listener" event="kernel.terminate" method="onTerminate"/>
             <call method="setLogger">
                 <argument type="service" id="logger" on-invalid="ignore"/>

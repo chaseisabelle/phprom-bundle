@@ -11,6 +11,7 @@ use PHProm\Timer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 /**
@@ -44,8 +45,15 @@ class RequestListener implements LoggerAwareInterface
             ->setDescription('incoming http request latencies')
             ->setLabels(['route', 'status']);
 
-        $this->timer = (new Timer($histogram))
-            ->start();
+        $this->timer = new Timer($histogram);
+    }
+
+    /**
+     * @param RequestEvent $event
+     */
+    public function onRequest(RequestEvent $event): void
+    {
+        $this->timer->start();
     }
 
     /**
