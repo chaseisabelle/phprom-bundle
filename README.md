@@ -81,6 +81,7 @@ namespace App\Controller;
 
 use ChaseIsabelle\PHPromBundle\Service\PHPromService;
 use Exception;
+use PHProm\Timer;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -115,6 +116,14 @@ class DefaultController
             rand(1, 100) / 10,
             ['foo' => 'bar'] //<< optional
         );
+
+        $timer = new Timer($histogram);
+
+        $timer->start();
+        // do something
+        $timer->stop()
+            ->record(['foo' => 'bar'])
+            ->reset();
 
         $summary = $phpromService->summary()
             ->setName('custom_summary')
