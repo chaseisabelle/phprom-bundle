@@ -1,5 +1,5 @@
 {
-  "name": "chaseisabelle/phprom-bundle",
+  "name": "vestiaire-collective/phprom-bundle",
   "description": "Symfony 4 PHProm Bundle",
   "keywords": [
     "symfony",
@@ -20,7 +20,7 @@
     "symfony/http-kernel": "^4.3|^5.0",
     "symfony/dependency-injection": "^4.3|^5.0",
     "symfony/config": "^4.3|^5.0",
-    "chaseisabelle/phprom-client": ">=0.0.5"
+    "chaseisabelle/phprom-client": "^0.0.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
