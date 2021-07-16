@@ -20,7 +20,7 @@
     "symfony/http-kernel": "^4.3|^5.0",
     "symfony/dependency-injection": "^4.3|^5.0",
     "symfony/config": "^4.3|^5.0",
-    "chaseisabelle/phprom-client": "^0.0.5"
+    "chaseisabelle/phprom-client": "dev-v0.0.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
@@ -37,5 +37,15 @@
     "psr-4": {
       "Tests\\ChaseIsabelle\\PHPromBundle\\": "Tests/"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.vestiairecollective.com/"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/vestiaire-collective/phprom-client"
+    }
+  ]
 }
